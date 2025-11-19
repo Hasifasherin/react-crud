@@ -1,0 +1,51 @@
+.footer {
+  background: rgb(179, 252, 139);
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 70px;
+  margin-bottom: 20px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 20px;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+
+.footer-link {
+  text-decoration: none;
+  font-size: 18px;
+  color: #000;
+  font-weight: 500;
+}
+
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin-bottom: 20px;
+}
+
+.social-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  transition: 0.2s ease;
+}
+
+.social-icon:hover {
+  color: #000;
+  transform: scale(1.1);
+}
+
+.footer-copy {
+  color: #333;
+  margin-top: 10px;
+  font-size: 15px;
+}

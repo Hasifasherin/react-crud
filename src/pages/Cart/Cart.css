@@ -1,0 +1,138 @@
+/* Main Cart Container */
+.cart-container {
+  padding: 30px;
+  min-height: calc(100vh - 160px); /* Prevent footer overlap */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title */
+.cart-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #0a6b0d;
+}
+
+/* Empty text */
+.empty-text {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+  padding: 40px 0;
+}
+
+/* Cart List */
+.cart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 25px;
+}
+
+/* Cart card */
+.cart-card {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 12px;
+  border: 2px solid #20a020;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  gap: 20px;
+}
+
+/* Product Image */
+.cart-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+/* Item Info */
+.cart-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cart-name {
+  font-size: 18px;
+  color: #0a6b0d;
+  font-weight: 600;
+}
+
+.cart-price {
+  margin: 8px 0;
+  font-size: 17px;
+  color: #222;
+}
+
+/* Quantity Selector */
+.qty-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.qty-box button {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: #20a020;
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* Hover effect */
+.qty-box button:hover {
+  background: #0d7a0f;
+}
+
+/* The number between + and - */
+.qty-box span {
+  font-size: 20px;
+  font-weight: 700;
+  min-width: 32px;
+  text-align: center;
+  display: inline-block;
+}
+
+
+/* Remove Button */
+.remove-btn {
+  margin-top: 10px;
+  padding: 8px 14px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  width: fit-content;
+}
+
+.remove-btn:hover {
+  background: #d90000;
+}
+
+/* Cart Total */
+.cart-total-box {
+  margin-top: auto; /* Push total to bottom */
+  text-align: right;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.total-price {
+  color: #0a6b0d;
+}
