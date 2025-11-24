@@ -11,7 +11,7 @@ const Delete = ({ onClose, onConfirm }) => {
         <div className="modal-actions">
           <button
             className="btn btn-danger"
-            onClick={onConfirm} // call the parent delete function
+            onClick={onConfirm}
           >
             Yes, Delete
           </button>

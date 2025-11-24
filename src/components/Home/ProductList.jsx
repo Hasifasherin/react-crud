@@ -33,7 +33,7 @@ const ProductList = () => {
     loadProducts();
   }, [location.state]);
 
-  // Sort by ID (ascending)
+  // Sort by ID 
   const sortedProducts = [...products].sort((a, b) => a.id - b.id);
 
   const last = currentPage * itemsPerPage;

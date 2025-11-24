@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import "../../App.css";
+import api from "../../Utils/baseUrl.js";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -9,14 +10,20 @@ function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = login(username, password);
-    if (success) {
-      navigate("/"); // redirect to home page
+    try {
+      const response = await api.post("/login", { email: username, password });
+      console.log(response.data, "Login  response");
+      if (response.data.success) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Login error:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "Login failed");
     }
-  };
 
+  };
   return (
     <div className="container">
       <div className="box">

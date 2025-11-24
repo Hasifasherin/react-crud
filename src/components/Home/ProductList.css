@@ -1,7 +1,7 @@
 .product-wrapper {
   width: 100%;
   padding: 20px 40px;
-  padding-bottom: 120px; /* prevents footer overlap */
+  padding-bottom: 120px; 
 }
 
 .title {
@@ -79,7 +79,7 @@
 
 /* Add Product Button */
 .add-product-btn {
-  background-color: #2e7d32; /* green */
+  background-color: #2e7d32; 
   color: white;
   padding: 10px 18px;
   border: none;

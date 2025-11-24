@@ -10,7 +10,7 @@ const ProductCard = ({ data, onDelete, onUpdate }) => {
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
 
-  if (!data) return null; // safety check for Vite refresh
+  if (!data) return null; 
 
   /* ---------------- DELETE PRODUCT ---------------- */
   const handleDelete = async () => {

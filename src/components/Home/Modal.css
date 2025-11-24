@@ -15,8 +15,8 @@
   background: #fff;
   padding: 25px;
   width: 90%;
-  max-width: 450px; /* wider for edit modal */
-  max-height: 85vh; /* scroll if content too tall */
+  max-width: 450px; 
+  max-height: 85vh; 
   border-radius: 10px;
   text-align: left;
   overflow-y: auto;

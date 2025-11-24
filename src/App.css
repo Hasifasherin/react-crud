@@ -43,7 +43,8 @@ html, body, #root {
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
-  background-color: #fafafa;
+     background-color: #fafafa;
+    color: black !important;
 }
 
 .button {
