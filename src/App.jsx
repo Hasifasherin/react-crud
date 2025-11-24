@@ -13,6 +13,8 @@ import AddProduct from "./components/Home/AddProduct.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
 import { CartProvider } from "./context/CartContext";
 import "./App.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -34,6 +36,8 @@ export default function App() {
   return (
     <CartProvider>
       <BrowserRouter>
+        <ToastContainer position="top-right" />
+
         <Layout>
           <Routes>
             <Route path="/login" element={<Login />} />

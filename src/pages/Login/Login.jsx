@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import "../../App.css";
 import api from "../../Utils/baseUrl.js";
+import { toast } from "react-toastify";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -12,18 +13,23 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const response = await api.post("/login", { email: username, password });
-      console.log(response.data, "Login  response");
+
+      console.log(response.data, "Login response");
+
       if (response.data.success) {
+        toast.success(response.data.message); 
         navigate("/");
       }
     } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "Login failed");
+      const msge = error.response?.data?.message || "Login failed";
+      toast.error(msge); 
+      console.error("Login error:", msge);
     }
-
   };
+
   return (
     <div className="container">
       <div className="box">
