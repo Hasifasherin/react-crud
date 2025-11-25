@@ -4,12 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 const AuthContext = createContext();
 
-// const fakeUsers = [
-//   { username: "admin", password: "1234" },
-//   { username: "user", password: "1234" },
-//   { username: "hasifa", password: "abcd" },
-// ];
-
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -54,22 +54,23 @@
 .page-btn,
 .page-number {
   border: 1px solid #ccc;
-  background: white;
+  background: rgb(241, 233, 233)!important;
   padding: 8px 14px;
   border-radius: 50px;
   cursor: pointer;
+  color: black;
   transition: 0.2s ease;
 }
 
 .page-number.active {
-  background: #007bff;
-  color: white;
-  border-color: #007bff;
+  background: #95e1a9 !important;
+  color: black !important;
+  border-color: #53f25b !important;
 }
 
 .page-btn:hover,
 .page-number:hover {
-  background: #eee;
+  background: #eee !important;
 }
 
 .page-btn:disabled {
