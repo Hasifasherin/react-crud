@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link } from "react-router-dom";
 import "../../App.css";
 import api from "../../Utils/baseUrl.js";
 
@@ -15,7 +15,7 @@ function Signup() {
         try {
             const response = await api.post("/signup", { username, email, password });
             console.log(response.data, "Signup response");
-            
+
             //check signup successful then go to login page 
             if (response.data.success === true ) {
                 navigate("/login");
@@ -56,6 +56,8 @@ function Signup() {
                         Signup 
                     </button> 
                 </form> 
+                <Link to="/login" className="link">Already have an account. Login</Link>
+
             </div> 
         </div>
     );

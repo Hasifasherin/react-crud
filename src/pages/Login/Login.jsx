@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import "../../App.css";
 import api from "../../Utils/baseUrl.js";
 import { toast } from "react-toastify";
+
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -53,6 +54,9 @@ function Login() {
             Login
           </button>
         </form>
+      <Link to="/signup" className="link">Don't have an account? Create new</Link>
+
+        
       </div>
     </div>
   );

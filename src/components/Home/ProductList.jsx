@@ -1,44 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import ProductCard from "./ProductCard.jsx";
+import AddProduct from "./AddProduct.jsx";
+import api from "../../Utils/baseUrl.js";
 import "./ProductList.css";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const itemsPerPage = 8;
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const res = await axios.get("https://fakestoreapi.com/products");
-        let apiProducts = res.data;
-
-        // If a new product is passed from AddProduct page
-        if (location.state?.newProduct) {
-          apiProducts = [location.state.newProduct, ...apiProducts];
-        }
-
-        setProducts(apiProducts);
+        const res = await api.get("/admin/products");
+        setProducts(res.data);
       } catch (err) {
         console.error(err);
       }
     };
-
     loadProducts();
-  }, [location.state]);
+  }, []);
 
-  // Sort by ID 
-  const sortedProducts = [...products].sort((a, b) => a.id - b.id);
+  // Sort by ID
+  const sortedProducts = [...products].sort((a, b) =>
+    a._id.localeCompare(b._id)
+  );
 
   const last = currentPage * itemsPerPage;
   const first = last - itemsPerPage;
-
   const currentProducts = sortedProducts.slice(first, last);
   const totalPages = Math.ceil(products.length / itemsPerPage);
 
@@ -53,7 +44,7 @@ const ProductList = () => {
 
       <button
         className="add-product-btn"
-        onClick={() => navigate("/add-product")}
+        onClick={() => setShowAddModal(true)}
       >
         Add Product
       </button>
@@ -61,14 +52,14 @@ const ProductList = () => {
       <div className="product-grid">
         {currentProducts.map((item) => (
           <ProductCard
-            key={item.id}
+            key={item._id}
             data={item}
             onDelete={(id) =>
-              setProducts(products.filter((p) => p.id !== id))
+              setProducts(products.filter((p) => p._id !== id))
             }
             onUpdate={(updated) =>
               setProducts(
-                products.map((p) => (p.id === updated.id ? updated : p))
+                products.map((p) => (p._id === updated._id ? updated : p))
               )
             }
           />
@@ -88,9 +79,7 @@ const ProductList = () => {
         {[...Array(totalPages)].map((_, i) => (
           <button
             key={i}
-            className={`page-number ${
-              currentPage === i + 1 ? "active" : ""
-            }`}
+            className={`page-number ${currentPage === i + 1 ? "active" : ""}`}
             onClick={() => handlePageChange(i + 1)}
           >
             {i + 1}
@@ -105,6 +94,18 @@ const ProductList = () => {
           &gt;
         </button>
       </div>
+
+      {/* Add Product Modal */}
+      {showAddModal && (
+  <AddProduct
+    onClose={() => setShowAddModal(false)}
+    onAdd={(newProduct) => {
+      setProducts([newProduct, ...products]);
+      setShowAddModal(false);
+    }}
+  />
+)}
+
     </div>
   );
 };

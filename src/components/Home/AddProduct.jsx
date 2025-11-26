@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
+import api from "../../Utils/baseUrl";
 import "./Modal.css";
 
-const AddProduct = () => {
-  const navigate = useNavigate();
-
+const AddProduct = ({ onClose, onAdd }) => {
   const [formData, setFormData] = useState({
     title: "",
     price: "",
@@ -19,7 +16,7 @@ const AddProduct = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleAddProduct = (e) => {
+  const handleAddProduct = async (e) => {
     e.preventDefault();
 
     if (!formData.title || !formData.price || !formData.category) {
@@ -27,14 +24,14 @@ const AddProduct = () => {
       return;
     }
 
-    axios
-      .post("https://fakestoreapi.com/products", formData)
-      .then((res) => {
-        toast.success("Product added successfully!");
-
-        navigate("/", { state: { newProduct: res.data } });
-      })
-      .catch(() => toast.error("Failed to add product!"));
+    try {
+      const res = await api.post("/admin/add-product", formData);
+      toast.success("Product added successfully!");
+      onAdd?.(res.data.product || res.data); 
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to add product!");
+    }
   };
 
   return (
@@ -64,7 +61,7 @@ const AddProduct = () => {
           </div>
           <div className="modal-actions">
             <button type="submit" className="btn btn-success">Add Product</button>
-            <button type="button" className="btn btn-secondary" onClick={() => navigate("/")}>Cancel</button>
+            <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
           </div>
         </form>
       </div>

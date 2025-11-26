@@ -61,3 +61,8 @@ html, body, #root {
 .button:hover {
   background-color: #0056b3;
 }
+
+.link{
+  text-decoration: none;
+  
+}

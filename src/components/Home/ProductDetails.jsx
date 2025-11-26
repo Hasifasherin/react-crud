@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useCart } from "../../context/CartContext.jsx";
 import { toast } from "react-toastify";
 import "./ProductDetails.css";
+import api from "../../Utils/baseUrl.js"
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -11,21 +11,25 @@ const ProductDetails = () => {
   const { addToCart } = useCart();
 
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const res = await axios.get(
-          `https://fakestoreapi.com/products/${id}`
-        );
-        setProduct(res.data);
+        const res = await api.get(`/admin/products/${id}`);
+        setProduct(res.data.product);
+        setLoading(false);
       } catch (err) {
         console.error(err);
+        toast.error("Failed to load product");
+        setLoading(false);
       }
     };
 
     loadProduct();
   }, [id]);
+
+  if (loading) return <h2 className="loading-text">Loading Product...</h2>;
 
   if (!product)
     return <h2 className="loading-text">Loading Product...</h2>;

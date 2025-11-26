@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./Modal.css";
+import api from "../../Utils/baseUrl";
 import { toast } from "react-toastify";
+import "./Modal.css";
 
 const Edit = ({ id, onClose, onUpdate }) => {
-  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
     title: "",
     price: "",
@@ -13,49 +13,51 @@ const Edit = ({ id, onClose, onUpdate }) => {
     description: "",
   });
 
-  // Fetch product details by ID when modal opens
+  // Fetch product data when modal opens
   useEffect(() => {
     if (!id) return;
-    axios
-      .get(`https://fakestoreapi.com/products/${id}`)
+
+    api
+      .get(`/admin/products/${id}`)
       .then((res) => {
-        setProduct(res.data);
+        const p = res.data.product;
+
         setForm({
-          title: res.data.title || "",
-          price: res.data.price || "",
-          category: res.data.category || "",
-          image: res.data.image || "",
-          description: res.data.description || "",
+          title: p.title || "",
+          price: p.price || "",
+          category: p.category || "",
+          image: p.image || "",
+          description: p.description || "",
         });
+
+        setLoading(false);
       })
       .catch((err) => {
-        console.error("Failed to fetch product:", err);
-        toast.error("Failed to load product data");
+        console.error("Error loading product:", err);
+        toast.error("Failed to load product");
       });
   }, [id]);
-
-  if (!product) return null; // Wait for data
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    const updatedProduct = { ...product, ...form };
-    axios
-      .put(`https://fakestoreapi.com/products/${id}`, updatedProduct)
-      .then(() => {
-        toast.success("Product updated successfully!");
-        onUpdate && onUpdate(updatedProduct);
-        onClose();
-      })
-      .catch(() => {
-        // FakeStore PUT often fails, update UI anyway
-        toast.success("Product updated!");
-        onUpdate && onUpdate(updatedProduct);
-        onClose();
-      });
+  const handleSubmit = async () => {
+    try {
+      const res = await api.put(`/admin/products/${id}`, form);
+
+      // Update the parent product list
+      onUpdate(res.data.product);
+
+      // Close modal
+      onClose();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update product");
+    }
   };
+
+  if (loading) return <p className="text-center mt-5">Loading...</p>;
 
   return (
     <div className="modal-overlay">
@@ -110,7 +112,6 @@ const Edit = ({ id, onClose, onUpdate }) => {
             value={form.description}
             onChange={handleChange}
             className="textarea"
-            rows={4}
           />
         </div>
 
@@ -118,6 +119,7 @@ const Edit = ({ id, onClose, onUpdate }) => {
           <button className="btn btn-success" onClick={handleSubmit}>
             Update Product
           </button>
+
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>

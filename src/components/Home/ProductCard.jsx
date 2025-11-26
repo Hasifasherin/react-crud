@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Delete from "./Delete.jsx";
 import Edit from "./Edit.jsx";
-import axios from "axios";
+import api from "../../Utils/baseUrl.js";
 import { toast } from "react-toastify";
 
 const ProductCard = ({ data, onDelete, onUpdate }) => {
@@ -10,34 +10,24 @@ const ProductCard = ({ data, onDelete, onUpdate }) => {
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
 
-  if (!data) return null; 
+  if (!data) return null;
 
-  /* ---------------- DELETE PRODUCT ---------------- */
   const handleDelete = async () => {
     try {
-      await axios.delete(`https://fakestoreapi.com/products/${data.id}`);
+      await api.delete(`/admin/products/${data._id}`);
       toast.success("Product deleted successfully!");
-    } catch {
-      toast.success("Product deleted! (FakeStore fallback)");
+      onDelete?.(data._id);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete product");
+    } finally {
+      setShowDelete(false);
     }
-
-    onDelete?.(data.id);
-    setShowDelete(false);
   };
 
-  /* ---------------- UPDATE PRODUCT ---------------- */
-  const handleUpdate = async (updatedData) => {
-    try {
-      await axios.put(
-        `https://fakestoreapi.com/products/${data.id}`,
-        updatedData
-      );
-      toast.success("Product updated successfully!");
-    } catch {
-      toast.success("Product updated! (FakeStore fallback)");
-    }
-
-    onUpdate?.({ ...data, ...updatedData });
+  const handleUpdate = (updatedData) => {
+    // Just call the onUpdate callback once
+    onUpdate?.(updatedData);
     setShowEdit(false);
   };
 
@@ -51,45 +41,28 @@ const ProductCard = ({ data, onDelete, onUpdate }) => {
           style={{ height: "150px", objectFit: "contain" }}
         />
 
-        <h6 className="mt-2">
-          {data.title ? data.title.slice(0, 30) : "No Title"}...
-        </h6>
-
+        <h6 className="mt-2">{data.title?.slice(0, 30) || "No Title"}...</h6>
         <p className="text-success fw-bold">₹{data.price || 0}</p>
 
         <button
           className="btn btn-primary w-100 mb-2"
-          onClick={() => navigate(`/product/${data.id}`)}
+          onClick={() => navigate(`/product/${data._id}`)}
         >
           View Product
         </button>
 
-        <button
-          className="btn btn-danger w-100 mb-2"
-          onClick={() => setShowDelete(true)}
-        >
+        <button className="btn btn-danger w-100 mb-2" onClick={() => setShowDelete(true)}>
           Delete
         </button>
 
-        <button
-          className="btn btn-success w-100"
-          onClick={() => setShowEdit(true)}
-        >
+        <button className="btn btn-success w-100" onClick={() => setShowEdit(true)}>
           Edit
         </button>
       </div>
 
-      {showDelete && (
-        <Delete onClose={() => setShowDelete(false)} onConfirm={handleDelete} />
-      )}
+      {showDelete && <Delete onClose={() => setShowDelete(false)} onConfirm={handleDelete} />}
 
-      {showEdit && (
-        <Edit
-          id={data.id}
-          onClose={() => setShowEdit(false)}
-          onUpdate={handleUpdate}
-        />
-      )}
+      {showEdit && <Edit id={data._id} onClose={() => setShowEdit(false)} onUpdate={handleUpdate} />}
     </>
   );
 };
