@@ -21,6 +21,7 @@ function Login() {
       console.log(response.data, "Login response");
 
       if (response.data.success) {
+         localStorage.setItem("token", response.data.token);
         toast.success(response.data.message); 
         navigate("/");
       }
