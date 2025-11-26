@@ -25,7 +25,7 @@ const AddProduct = ({ onClose, onAdd }) => {
     }
 
     try {
-      const res = await api.post("/admin/add-product", formData);
+      const res = await api.post("/admin/add-product", formData);//------->api here
       toast.success("Product added successfully!");
       onAdd?.(res.data.product || res.data); 
     } catch (err) {

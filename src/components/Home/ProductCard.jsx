@@ -12,6 +12,7 @@ const ProductCard = ({ data, onDelete, onUpdate }) => {
 
   if (!data) return null;
 
+  //delete
   const handleDelete = async () => {
     try {
       await api.delete(`/admin/products/${data._id}`);
@@ -25,8 +26,9 @@ const ProductCard = ({ data, onDelete, onUpdate }) => {
     }
   };
 
+
+  //update 
   const handleUpdate = (updatedData) => {
-    // Just call the onUpdate callback once
     onUpdate?.(updatedData);
     setShowEdit(false);
   };

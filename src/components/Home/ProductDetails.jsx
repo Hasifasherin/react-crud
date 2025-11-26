@@ -12,6 +12,7 @@ const ProductDetails = () => {
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     const loadProduct = async () => {
