@@ -11,18 +11,15 @@ function Login() {
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/login", { email: username, password });
+      // const response = await api.post("/login", { email: username, password });
+      const response = await login(username, password)
+      console.log(response, "Login response");
 
-      console.log(response.data, "Login response");
-
-      if (response.data.success) {
-         localStorage.setItem("token", response.data.token);
-        toast.success(response.data.message); 
+      if (response) {
         navigate("/");
       }
     } catch (error) {

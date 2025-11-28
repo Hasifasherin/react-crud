@@ -51,6 +51,8 @@ const AddProduct = ({ onClose, onAdd }) => {
             <label>Category</label>
             <input type="text" name="category" value={formData.category} onChange={handleChange} required />
           </div>
+
+          
           <div className="form-group">
             <label>Image URL</label>
             <input type="text" name="image" value={formData.image} onChange={handleChange} />

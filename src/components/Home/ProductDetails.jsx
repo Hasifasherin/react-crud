@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext.jsx";
 import { toast } from "react-toastify";
 import "./ProductDetails.css";
-import api from "../../Utils/baseUrl.js"
+import api from "../../Utils/baseUrl.js";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -12,7 +12,6 @@ const ProductDetails = () => {
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -31,13 +30,10 @@ const ProductDetails = () => {
   }, [id]);
 
   if (loading) return <h2 className="loading-text">Loading Product...</h2>;
-
-  if (!product)
-    return <h2 className="loading-text">Loading Product...</h2>;
+  if (!product) return <h2 className="loading-text">Product not found</h2>;
 
   const handleAddCart = () => {
     addToCart(product);
-    toast.success("Added to cart!");
   };
 
   return (
@@ -57,15 +53,11 @@ const ProductDetails = () => {
 
         <div className="product-right">
           <h2 className="product-title">{product.title}</h2>
-
           <h3 className="product-price">₹{product.price}</h3>
-
           <p className="product-category">
             Category: <span>{product.category}</span>
           </p>
-
           <p className="product-description">{product.description}</p>
-
           <button className="cart-btn" onClick={handleAddCart}>
             Add to Cart
           </button>
@@ -76,3 +68,4 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
+  

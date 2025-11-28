@@ -5,6 +5,8 @@ import "./Cart.css";
 const Cart = () => {
   const { cart, removeItem, increaseQty, decreaseQty } = useCart();
 
+  console.log("Cart component rendered. Current cart:", cart);
+
   return (
     <div className="cart-container">
       <h2 className="cart-title">Your Cart</h2>
@@ -14,22 +16,25 @@ const Cart = () => {
       ) : (
         <div className="cart-list">
           {cart.map((item) => (
-            <div className="cart-card" key={item.id}>
-              <img src={item.image} alt={item.title} className="cart-img" />
-
+            <div className="cart-card" key={item._id}>
+              <img
+                src={item.product.image}
+                alt={item.product.title}
+                className="cart-img"
+              />
               <div className="cart-info">
-                <h3 className="cart-name">{item.title}</h3>
-                <p className="cart-price">₹{item.price}</p>
+                <h3 className="cart-name">{item.product.title}</h3>
+                <p className="cart-price">₹{item.product.price}</p>
 
                 <div className="qty-box">
-                  <button onClick={() => decreaseQty(item.id)}>-</button>
-                  <span>{item.qty}</span>
-                  <button onClick={() => increaseQty(item.id)}>+</button>
+                  <button onClick={() => decreaseQty(item._id)}>-</button>
+                  <span>{item.quantity}</span>
+                  <button onClick={() => increaseQty(item._id)}>+</button>
                 </div>
 
                 <button
                   className="remove-btn"
-                  onClick={() => removeItem(item.id)}
+                  onClick={() => removeItem(item._id)}
                 >
                   Remove
                 </button>
@@ -44,7 +49,7 @@ const Cart = () => {
           <h3>
             Total:{" "}
             <span className="total-price">
-              ₹{cart.reduce((sum, item) => sum + item.price * item.qty, 0)}
+              ₹{cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0)}
             </span>
           </h3>
         </div>
