@@ -44,16 +44,29 @@ const Edit = ({ id, onClose, onUpdate }) => {
 
   const handleSubmit = async () => {
     try {
-      const res = await api.put(`/admin/products/${id}`, form);
+      const data = new FormData();
+      data.append("title", form.title);
+      data.append("price", form.price);
+      data.append("category", form.category);
+      data.append("description", form.description);
+      if (form.image instanceof File) {
+        data.append("image", form.image);
+      }
 
+      const res = await api.put(`/admin/products/${id}`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      toast.success(res.data?.message || "Product updated successfully!");
+      
       // Update the parent product list
       onUpdate(res.data.product);
 
       // Close modal
       onClose();
     } catch (err) {
-      console.error(err);
-      toast.error("Failed to update product");
+     toast.error(
+      err.response?.data?.message || "Failed to update product"
+    );
     }
   };
 
@@ -98,10 +111,11 @@ const Edit = ({ id, onClose, onUpdate }) => {
         <div className="form-group">
           <label>Image URL</label>
           <input
+            type="file"
             name="image"
-            value={form.image}
-            onChange={handleChange}
-            className="input"
+            onChange={(e) =>
+              setForm({ ...form, image: e.target.files[0] })
+            }
           />
         </div>
 

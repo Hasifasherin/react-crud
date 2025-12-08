@@ -24,8 +24,7 @@ const Cart = () => {
               />
               <div className="cart-info">
                 <h3 className="cart-name">{item.product.title}</h3>
-                <p className="cart-price">₹{item.product.price}</p>
-
+                <p className="cart-price">₹{item.product.price * item.quantity}</p>
                 <div className="qty-box">
                   <button onClick={() => decreaseQty(item._id)}>-</button>
                   <span>{item.quantity}</span>

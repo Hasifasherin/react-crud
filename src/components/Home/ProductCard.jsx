@@ -4,6 +4,7 @@ import Delete from "./Delete.jsx";
 import Edit from "./Edit.jsx";
 import api from "../../Utils/baseUrl.js";
 import { toast } from "react-toastify";
+import {IMAGE_BASE_URL} from "../../Utils/baseUrl.js"
 
 const ProductCard = ({ data, onDelete, onUpdate }) => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const ProductCard = ({ data, onDelete, onUpdate }) => {
     <>
       <div className="card p-3 text-center">
         <img
-          src={data.image}
+          src={IMAGE_BASE_URL + data.image}// imge is here----->
           alt={data.title}
           className="card-img-top"
           style={{ height: "150px", objectFit: "contain" }}

@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useAuth } from "./AuthContext.jsx";
 import api from "../Utils/baseUrl.js";
 import { toast } from "react-toastify";
 
@@ -10,12 +9,21 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 const token = localStorage.getItem('token')
   console.log("CartContext initialized. Token:", token);
+  // Load cart from localStorage first for instant UI
+  useEffect(() => {
+  const storedCart = localStorage.getItem("cart");
+  if (storedCart) setCart(JSON.parse(storedCart));
+}, []);
 
+useEffect(() => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}, [cart]);
+
+  // Fetch cart from backend
   useEffect(() => {
     const fetchCart = async () => {
       if (!token) {
-        setCart([]);
-        return;
+        return  setCart([]);
       }
 
       try {
@@ -75,47 +83,53 @@ const token = localStorage.getItem('token')
 
   // Increase qnty
   const increaseQty = async (cartItemId) => {
-    const item = cart.find((i) => i._id === cartItemId);
-    if (!item) return;
+  //  Find the item in the current cart
+  const item = cart.find((i) => i._id === cartItemId);
+  if (!item) return;
 
-    try {
-      await api.post(
-        "/cart",
-        { productId: item.product._id },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+  //  update the UI
+  setCart((prev) =>
+    prev.map((i) =>
+      i._id === cartItemId ? { ...i, quantity: i.quantity + 1 } : i
+    )
+  );
+  //  Update quantity in backend
+  try {
+    await api.patch(
+      `/cart/${cartItemId}`,
+      { quantity: item.quantity + 1 },  
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  } catch (err) {
+    console.error("Failed to update quantity:", err);
+  }
+};
 
-      setCart((prev) =>
-        prev.map((i) =>
-          i._id === cartItemId ? { ...i, quantity: i.quantity + 1 } : i
-        )
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   // Decrease qnty
   const decreaseQty = async (cartItemId) => {
-    const item = cart.find((i) => i._id === cartItemId);
-    if (!item || item.quantity <= 1) return;
+  //  Prevent going below 1
+  const item = cart.find((i) => i._id === cartItemId);
+  if (!item || item.quantity <= 1) return;
+  //  Optimistically update the UI
+  setCart((prev) =>
+    prev.map((i) =>
+      i._id === cartItemId ? { ...i, quantity: i.quantity - 1 } : i
+    )
+  );
 
-    try {
-      await api.post(
-        "/cart",
-        { productId: item.product._id },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+  // 3. Update quantity in backend
+  try {
+    await api.patch(
+      `/cart/${cartItemId}`,
+      { quantity: item.quantity - 1 },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  } catch (err) {
+    console.error("Failed to update quantity:", err);
+  }
+};
 
-      setCart((prev) =>
-        prev.map((i) =>
-          i._id === cartItemId ? { ...i, quantity: i.quantity - 1 } : i
-        )
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   return (
     <CartContext.Provider

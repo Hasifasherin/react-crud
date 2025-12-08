@@ -25,19 +25,29 @@ const AddProduct = ({ onClose, onAdd }) => {
     }
 
     try {
-      const res = await api.post("/admin/add-product", formData);//------->api here
-      toast.success("Product added successfully!");
+      //for sending image  instead of json
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("price",formData.price);
+      data.append("category",formData.category);
+      data.append("description",formData.description);
+      data.append("image",formData.image);//imge here-------------->
+
+      const res = await api.post("/admin/add-product", data,{
+        headers:{"Content-Type":"multipart/form-data"},
+      });//------->api here
+      toast.success(res.data?.message || "Product added successfully!");
       onAdd?.(res.data.product || res.data); 
     } catch (err) {
       console.error(err);
-      toast.error("Failed to add product!");
+      toast.error(err.response?.data?.message || "Failed to add product!");
     }
   };
 
   return (
     <div className="modal-overlay">
       <div className="modal-box">
-        <h3>Add New Product</h3>
+        <h3>Add New Product</h3> 
         <form onSubmit={handleAddProduct}>
           <div className="form-group">
             <label>Title</label>
@@ -52,11 +62,15 @@ const AddProduct = ({ onClose, onAdd }) => {
             <input type="text" name="category" value={formData.category} onChange={handleChange} required />
           </div>
 
-          
           <div className="form-group">
-            <label>Image URL</label>
-            <input type="text" name="image" value={formData.image} onChange={handleChange} />
-          </div>
+          <label>Upload Image</label>
+          <input 
+            type="file" 
+            name="image"
+            onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
+          />
+        </div>
+
           <div className="form-group">
             <label>Description</label>
             <textarea name="description" value={formData.description} onChange={handleChange} />

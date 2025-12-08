@@ -17,4 +17,6 @@ api.interceptors.request.use(
   }
 );
 
+export const IMAGE_BASE_URL = "http://localhost:3000/assets/";
+
 export default api;

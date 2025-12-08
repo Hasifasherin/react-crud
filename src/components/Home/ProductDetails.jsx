@@ -4,6 +4,7 @@ import { useCart } from "../../context/CartContext.jsx";
 import { toast } from "react-toastify";
 import "./ProductDetails.css";
 import api from "../../Utils/baseUrl.js";
+import { IMAGE_BASE_URL } from "../../Utils/baseUrl";   
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -45,7 +46,7 @@ const ProductDetails = () => {
       <div className="product-details-card">
         <div className="product-left">
           <img
-            src={product.image}
+            src={IMAGE_BASE_URL + product.image}//imge ------------------>
             alt={product.title}
             className="product-img"
           />
